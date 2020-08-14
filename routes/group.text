@@ -1,0 +1,22 @@
+
+Route::group(['prefix' => 'programs'], function () {
+    Route::get('listPrograms', 'ProgramsController@listPrograms');
+
+    Route::get('findbyid/{id}', 'ProgramsController@findProgram');
+
+    Route::get('findbyname/{name}', 'ProgramsController@findProgramsByName');
+
+    Route::get('create/', 'ProgramsController@createProgram');
+
+    Route::post('create', 'ProgramsController@saveProgram')->name(
+        'programs.save'
+    );
+
+    Route::get('edit/{id}', 'ProgramsController@editProgram')->name(
+        'programs.edit'
+    );
+
+    Route::post('edit/', 'ProgramsController@updateProgram')->name(
+        'programs.update'
+    );
+});

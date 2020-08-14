@@ -33,6 +33,12 @@
                         <h3>Edit {{$program->name}}</h3>
                     </div>
 
+                    @if($errors->any())
+                        @foreach($errors->all() as $error)
+                            {{ $error }} <br />
+                        @endforeach
+                    @endif
+
                     <form method="post" action='{{ route('programs.update') }}'>
 
                         @csrf
@@ -47,6 +53,7 @@
                         </div>
                         <input hidden name='id' value='{{$program->id}}' />
 
+                        <a href="{{route('programs.list')}}" class="btn btn-secondary" role="button" aria-pressed="true">Cancel</a>
                         <button type='submit' class="btn btn-success">Update</button>
 
                     </form>

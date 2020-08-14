@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Program;
+use Session;
 
 class ProgramsController extends Controller
 {
@@ -12,7 +13,8 @@ class ProgramsController extends Controller
     {
         $programs = Program::get();
         /* dd($programs); */
-        return view('listPrograms', compact('programs'));
+        Session::put('mode', 'list');
+        return view('listPrograms', compact('programs'))->with('mode', 'list');
     }
 
     // search program by an id
@@ -78,12 +80,43 @@ class ProgramsController extends Controller
 
     public function updateProgram(Request $request)
     {
+        $returnValidation = $request->validate([
+            'name' => 'required',
+            'description' => 'required'
+        ]);
+
         $program = Program::find($request->id);
         /* $program = Program::where('id', $request->id) */
         /* ->get() */
         /* ->first(); */
         $program->name = $request->name;
         $program->description = $request->description;
-        $program->save();
+        $returnVal = $program->save();
+
+        $programs = Program::get();
+
+        return view('listPrograms', compact('programs'));
+    }
+
+    public function searchProgram(Request $request)
+    {
+        /* dd('User is searching program by name: ' . $request->searchByName); */
+        $programs = Program::where(
+            'name',
+            'like',
+            '%' . $request->searchByName . '%'
+        )->get();
+
+        Session::put('mode', 'searchresult');
+        return view('listPrograms', compact('programs'));
+    }
+
+    public function deleteProgram($id)
+    {
+        $program = Program::find($id);
+        $program->delete();
+
+        $programs = Program::get();
+        return view('listPrograms', compact('programs'));
     }
 }

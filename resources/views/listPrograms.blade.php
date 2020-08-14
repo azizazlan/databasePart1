@@ -12,19 +12,34 @@
             <h3>List of programs</h3>
                 {{-- {{ $program->id }}: {{ $program->name }}, {{ $program->desc }} <br /> --}}
 
-            <div class="list-group">
-                
-            @foreach($programs as $program)
-                <a href="{{ route('programs.edit', ['id' => $program->id]) }}" class="list-group-item list-group-item-action">
-                    <div class="d-flex w-100 justify-content-between">
-                        <h5 class="mb-1">{{ $program->name }}</h5>
-                        <small class="text-muted">{{ $program->id }}</small>
+                <form method="post" action="{{route('programs.search')}}">
+                    @csrf
+                    <div class="input-group mb-3">
+                        <input placeholder="Carian program..." class="form-control" name="searchByName" />
+                        <div class="input-group-append">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </div>
                     </div>
-                    <p class="mb-1">{{ $program->desc }}</p>
-                    <small class="text-muted">Donec id elit non mi porta.</small>
-                </a>
-            @endforeach    
-            </div>
+                </form>
+
+                <div class="list-group">
+
+                    @foreach($programs as $program)
+                        <div class="d-flex list-group-item list-group-item-action">
+                            <a href="{{ route('programs.edit', ['id' => $program->id]) }}" class="">
+                                <h5 class="mb-1">{{ $program->name }}</h5>
+                                <p>{{ $program->desc }}</p>
+                            </a>
+                            <small class="text-muted">{{ $program->id }}</small>
+                            <a href="{{ route('programs.delete', ['id' => $program->id]) }}" class=""> del</a>
+                        </div>
+                    @endforeach    
+                </div>
+                @if(session()->has('mode') && session()->get('mode')=='searchresult')
+                    <div style="padding-top: 30px">
+                        <a href="{{route('programs.list')}}" class="btn btn-secondary" role="button" aria-pressed="true">Return to list</a>
+                    </div>
+                @endif
         </div>
     </body>
 </html>

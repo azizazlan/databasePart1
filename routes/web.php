@@ -27,7 +27,9 @@ Route::get('/admin/user/{id}', function ($id) {
     dd('wecome to admin, user with id ' . $id);
 });
 
-Route::get('/programs/listPrograms', 'ProgramsController@listPrograms');
+Route::get('/programs/listPrograms', 'ProgramsController@listPrograms')->name(
+    'programs.list'
+);
 
 Route::get('/programs/findbyid/{id}', 'ProgramsController@findProgram');
 
@@ -48,4 +50,12 @@ Route::get('programs/edit/{id}', 'ProgramsController@editProgram')->name(
 
 Route::post('programs/edit/', 'ProgramsController@updateProgram')->name(
     'programs.update'
+);
+
+Route::post('programs/search/', 'ProgramsController@searchProgram')->name(
+    'programs.search'
+);
+
+Route::get('programs/delete/{id}', 'ProgramsController@deleteProgram')->name(
+    'programs.delete'
 );
